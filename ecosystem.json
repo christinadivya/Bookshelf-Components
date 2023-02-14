@@ -1,0 +1,55 @@
+{
+  /**
+   * Application configuration section
+   * http://pm2.keymetrics.io/docs/usage/application-declaration/
+   */
+  "apps" : [
+
+    // First application
+    {
+      "name"      : "stocklocator-app-service",
+      "script"    : "app.js",
+      "stocklocators" : "max",
+      "exec_mode" : "cluster",
+      "env": {
+        "COMMON_VARIABLE": "true"
+      },
+      "env_staging" : {
+        "NODE_ENV": "staging"
+      }
+    },
+
+    // Second application
+    // {
+    //   name      : "WEB",
+    //   script    : "web.js"
+    // }
+  ],
+
+  /**
+   * Deployment section
+   * http://pm2.keymetrics.io/docs/usage/deployment/
+   */
+  "deploy" : {
+    "staging" : {
+      "user" : "ubuntu",
+      "host" : "52.87.42.78",
+      "ref"  : "origin/master",
+      "repo" : "git@github.com:jaiobs/stocklocator-backend.git",
+      "path" : "/home/ubuntu/projects",
+      "key" : "smilewebdev.pem",
+      "post-deploy" : "yarn && pm2 startOrRestart ecosystem.json --env staging"
+    },
+    "dev" : {
+      "user" : "ubuntu",
+      "host" : "212.83.163.1",
+      "ref"  : "origin/master",
+      "repo" : "git@github.com:repo.git",
+      "path" : "/var/www/development",
+      "post-deploy" : "yarn && pm2 startOrRestart ecosystem.json --env dev",
+      "env"  : {
+        "NODE_ENV": "dev"
+      }
+    }
+  }
+}

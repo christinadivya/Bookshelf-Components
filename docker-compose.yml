@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  servicedev:
+    image: "optisolbusiness/stocklocator-service:dev"
+
+    # Expose ports [HOST:CONTAINER}
+    ports:
+      - "7050:4040"
+
+    volumes:
+      - /home/ubuntu/projects/stocklocator/public-dev:/app/public
+
+    # Set environment variables from this file
+    # env_file:
+    #   - .env
+
+    # Overwrite any env var defined in .env file (if required)
+    environment:
+      - MYSQL_HOST=34.232.103.127
+      - MYSQL_DATABASE=stocklocator
+      - MYSQL_ROOT_PASSWORD=db@dm1n
+      - NODE_ENV=production
+      - APP_URL=http://34.232.103.127
+      - WEB_PORT=7000
+      - SERVICE_PORT=7050
+
+    # Link to containers in another service.
+    # Links also express dependency between services in the same way as depends_on,
+    # so they determine the order of service startup.+
+    # links:
+    #  - mongomusationdev
+  # webdev:
+    image: "optisolbusiness/stocklocator-frontend:dev"
+    ports:
+      - "7000:80"
